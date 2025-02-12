@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "bankingAPI",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authbankingappa25d661e",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

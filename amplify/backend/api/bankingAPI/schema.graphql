@@ -1,0 +1,92 @@
+# User Model
+type User @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  email: String! @index(name: "byEmail", sortKeyFields: ["name"])
+  phoneNumber: String
+  profilePicture: String
+  accounts: [Account] @hasMany(indexName: "byUser", fields: ["id"])
+  cards: [Card] @hasMany(indexName: "byUser", fields: ["id"])
+  loans: [Loan] @hasMany(indexName: "byUser", fields: ["id"])
+  properties: [Property] @hasMany(indexName: "byUser", fields: ["id"])
+  notifications: [Notification] @hasMany(indexName: "byUser", fields: ["id"])
+  supportTickets: [SupportTicket] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+# Account Model
+type Account @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  accountNumber: String! @index(name: "byAccountNumber", sortKeyFields: ["accountType"])
+  accountType: String!
+  balance: Float!
+  currency: String!
+  userID: ID! @index(name: "byUser")
+  user: User! @belongsTo(fields: ["userID"])
+  transactions: [Transaction] @hasMany(indexName: "byAccount", fields: ["id"])
+}
+
+# Transaction Model
+type Transaction @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  amount: Float!
+  transactionType: String!
+  date: AWSDateTime!
+  description: String
+  category: String
+  accountID: ID! @index(name: "byAccount")
+  account: Account! @belongsTo(fields: ["accountID"])
+}
+
+# Card Model
+type Card @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  cardNumber: String! @index(name: "byCardNumber")
+  cardType: String!
+  expiryDate: AWSDate!
+  cvv: Int!
+  userID: ID! @index(name: "byUser")
+  user: User! @belongsTo(fields: ["userID"])
+}
+
+# Loan Model
+type Loan @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  loanType: String!
+  amount: Float!
+  interestRate: Float!
+  dueDate: AWSDate!
+  userID: ID! @index(name: "byUser")
+  user: User! @belongsTo(fields: ["userID"])
+}
+
+# Property Model
+type Property @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  address: String!
+  propertyType: String!
+  value: Float!
+  mortgageID: ID @index(name: "byMortgage")
+  userID: ID! @index(name: "byUser")
+  user: User! @belongsTo(fields: ["userID"])
+}
+
+# Notification Model
+type Notification @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  message: String!
+  date: AWSDateTime!
+  readStatus: Boolean!
+  userID: ID! @index(name: "byUser")
+  user: User! @belongsTo(fields: ["userID"])
+}
+
+# Support Ticket Model
+type SupportTicket @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  subject: String!
+  description: String!
+  status: String!
+  dateOpened: AWSDateTime!
+  userID: ID! @index(name: "byUser")
+  user: User! @belongsTo(fields: ["userID"])
+}
