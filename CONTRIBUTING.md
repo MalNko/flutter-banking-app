@@ -68,14 +68,14 @@ dartanalyzer lib/
 ### Commit Message Format
 
 ```
-🔐 Type: Brief description
+🔒 Type: Brief description
 
 - More detailed explanation
 - Reference issue #123
 ```
 
 Types:
-- 🔐 Security fix
+- 🔒 Security fix
 - ✨ Feature
 - 🐛 Bug fix
 - 📦 Dependency update
